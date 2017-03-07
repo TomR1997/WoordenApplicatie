@@ -13,30 +13,13 @@ import java.util.Scanner;
  */
 public class HuffmanCodering {
 
+    private Facade facade;
     public HuffmanCodering()
     {
-        menu();
+        facade = new Facade();
+        facade.showMenu();
     }
     public static void main(String[] args) {
         HuffmanCodering hc=  new HuffmanCodering();
-    }
-    
-    public void menu()
-    {
-       Scanner reader = new Scanner(System.in);
-       System.out.println("Type text:");
-
-        try {
-            String input="";
-
-            if (reader.hasNext()) {
-                input = reader.next();
-            }
-  
-        } catch (Exception e) {
-            e.printStackTrace();
-            menu();
-        }
-            
     }
 }
