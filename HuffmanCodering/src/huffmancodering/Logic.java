@@ -52,15 +52,15 @@ public class Logic {
             }
             else
             {
-                tm.put(input.charAt(i), 1);
-                count++;
-            }      
+                tm.put(input.charAt(i), 1);             
+            }
+            count++;
         }
-        
+        System.out.println(tm.toString());
+        /* reverse
         Map sortedMap = sortByValues(tm);
- 
         Set set = sortedMap.entrySet();
-        System.out.println(set.toString()+" "+count);
+        System.out.println(set.toString()+" "+count);*/
     }
     
     public static <K, V extends Comparable<V>> Map<K, V> sortByValues(final Map<K, V> map) {
