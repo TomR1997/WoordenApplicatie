@@ -15,13 +15,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeMap;
 
 /**
  *
@@ -47,9 +44,9 @@ public class Logic {
 
                 PriorityQueue boom = generateTree(queue);
                 exportToFile(boom);
-                
+
                 Node hoofdKnoop = (Node) importTree().poll();
-                
+
                 HashMap<Character, String> tabel = new HashMap<>();
                 getCodes(hoofdKnoop, "", tabel);
                 System.out.println(tabel.toString());
@@ -63,11 +60,11 @@ public class Logic {
                 for (char c : importEncoded().toCharArray()) {
                     gecodeerdArray.add(c);
                 }
-                
+
                 StringBuilder ontvangenBericht = new StringBuilder("");
                 decodeMessage(hoofdKnoop, hoofdKnoop, ontvangenBericht, gecodeerdArray, 0);
                 System.out.println(ontvangenBericht.toString());
-                
+
             }
 
         } catch (Exception e) {
@@ -177,7 +174,7 @@ public class Logic {
             }
         }
     }
-    
+
     public void exportToFile(PriorityQueue rootNode) {
         try {
             FileOutputStream fos = new FileOutputStream("boom.bin");
@@ -188,7 +185,7 @@ public class Logic {
             e.printStackTrace();
         }
     }
-    
+
     public void exportToFile(String encoded) {
         BitSet bitSet = createBitset(encoded);
         try {
@@ -199,37 +196,37 @@ public class Logic {
             e.printStackTrace();
         }
     }
-    
+
     private BitSet createBitset(String s) {
         BitSet bitSet = new BitSet(s.length() + 1);
         int bitcounter = 0;
-        for(Character c : s.toCharArray()) {
-            if(c.equals('1')) {
+        for (Character c : s.toCharArray()) {
+            if (c.equals('1')) {
                 bitSet.set(bitcounter);
             }
             bitcounter++;
         }
-        bitSet.set(bitcounter+1);
+        bitSet.set(bitcounter + 1);
         return bitSet;
     }
-    
+
     public PriorityQueue importTree() {
         try {
             FileInputStream fis = new FileInputStream("boom.bin");
             ObjectInputStream oos = new ObjectInputStream(fis);
-            return (PriorityQueue)oos.readObject();
+            return (PriorityQueue) oos.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;
     }
-    
-     public String importEncoded() {
+
+    public String importEncoded() {
         try {
             FileInputStream fis = new FileInputStream("encoded.bin");
             DataInputStream dis = new DataInputStream(fis);
             File file = new File("encoded.bin");
-            byte[] result = new byte[(int)file.length()];
+            byte[] result = new byte[(int) file.length()];
             dis.readFully(result);
             BitSet bs = BitSet.valueOf(result);
             dis.close();
@@ -241,11 +238,11 @@ public class Logic {
         }
         return "";
     }
-     
-      private String bitSetToString(BitSet set){
+
+    private String bitSetToString(BitSet set) {
         String result = "";
-        for(int i = 0; i < (set.length() - 2); i++) {
-            if(set.get(i)) {
+        for (int i = 0; i < (set.length() - 2); i++) {
+            if (set.get(i)) {
                 result += "1";
             } else {
                 result += "0";
