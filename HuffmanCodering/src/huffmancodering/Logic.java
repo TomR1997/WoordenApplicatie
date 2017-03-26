@@ -5,7 +5,16 @@
  */
 package huffmancodering;
 
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,23 +43,19 @@ public class Logic {
                 Map<Character, Integer> map = countFrequency(input);
                 System.out.println(map.toString());
 
-                // Stap 2
                 PriorityQueue queue = sortFrequency(map);
 
-                // Stap 3
                 PriorityQueue boom = generateTree(queue);
 
-                // Stap 4
                 Node hoofdKnoop = (Node) boom.poll();
+                exportToFile(boom);
                 HashMap<Character, String> tabel = new HashMap<>();
                 getCodes(hoofdKnoop, "", tabel);
                 System.out.println(tabel.toString());
 
-                // Stap 5
                 String gecodeerdBericht = codeMessage(tabel, input);
                 System.out.println(gecodeerdBericht);
 
-                // Stap 6
                 ArrayList<Character> gecodeerdArray = new ArrayList<>();
 
                 for (char c : gecodeerdBericht.toCharArray()) {
@@ -60,6 +65,7 @@ public class Logic {
                 StringBuilder ontvangenBericht = new StringBuilder("");
                 decodeMessage(hoofdKnoop, hoofdKnoop, ontvangenBericht, gecodeerdArray, 0);
                 System.out.println(ontvangenBericht.toString());
+                
             }
 
         } catch (Exception e) {
@@ -68,7 +74,7 @@ public class Logic {
         }
     }
 
-    public static Map<Character, Integer> countFrequency(String input) {
+    public Map<Character, Integer> countFrequency(String input) {
         char[] chars = input.toCharArray();
 
         HashMap<Character, Integer> hashMap = new HashMap<>();
@@ -86,7 +92,7 @@ public class Logic {
         return hashMap;
     }
 
-    public static PriorityQueue sortFrequency(Map<Character, Integer> map) {
+    public PriorityQueue sortFrequency(Map<Character, Integer> map) {
         PriorityQueue queue = new PriorityQueue();
         for (Character c : map.keySet()) {
             queue.add(new Node(c, map.get(c)));
@@ -95,7 +101,7 @@ public class Logic {
         return queue;
     }
 
-    public static PriorityQueue generateTree(PriorityQueue queue) {
+    public PriorityQueue generateTree(PriorityQueue queue) {
         while (queue.size() >= 2) {
             Node left = (Node) queue.poll();
             Node right = (Node) queue.poll();
@@ -107,8 +113,7 @@ public class Logic {
         return queue;
     }
 
-    public static void getCodes(Node knoop, String code, HashMap<Character, String> tabel) {
-        // HashMap put: O(1)
+    public void getCodes(Node knoop, String code, HashMap<Character, String> tabel) {
         if (knoop.leftChild != null) {
             code += "0";
 
@@ -134,7 +139,7 @@ public class Logic {
         }
     }
 
-    public static String codeMessage(HashMap<Character, String> table, String message) {
+    public String codeMessage(HashMap<Character, String> table, String message) {
         char[] chars = message.toCharArray();
         String codedMessage = "";
 
@@ -145,7 +150,7 @@ public class Logic {
         return codedMessage;
     }
 
-    public static void decodeMessage(Node hoofdKnoop, Node knoop, StringBuilder bericht, ArrayList<Character> codedMessage, int count) {
+    public void decodeMessage(Node hoofdKnoop, Node knoop, StringBuilder bericht, ArrayList<Character> codedMessage, int count) {
         if (codedMessage.size() > count) {
             Character nummer = codedMessage.get(count);
 
@@ -169,5 +174,81 @@ public class Logic {
                 }
             }
         }
+    }
+    
+    public void exportToFile(PriorityQueue rootNode) {
+        try {
+            FileOutputStream fos = new FileOutputStream("boom.bin");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(rootNode);
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void exportToFile(String encoded) {
+        BitSet bitSet = createBitset(encoded);
+        try {
+            FileOutputStream fos = new FileOutputStream("encoded.bin");
+            fos.write(bitSet.toByteArray());
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private BitSet createBitset(String s) {
+        BitSet bitSet = new BitSet(s.length() + 1);
+        int bitcounter = 0;
+        for(Character c : s.toCharArray()) {
+            if(c.equals('1')) {
+                bitSet.set(bitcounter);
+            }
+            bitcounter++;
+        }
+        bitSet.set(bitcounter+1);
+        return bitSet;
+    }
+    
+    public Node importTree() {
+        try {
+            FileInputStream fis = new FileInputStream("boom.bin");
+            ObjectInputStream oos = new ObjectInputStream(fis);
+            return (Node)oos.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+     public String importEncoded() {
+        try {
+            FileInputStream fis = new FileInputStream("encoded.bin");
+            DataInputStream dis = new DataInputStream(fis);
+            File file = new File("encoded.bin");
+            byte[] result = new byte[(int)file.length()];
+            dis.readFully(result);
+            BitSet bs = BitSet.valueOf(result);
+            dis.close();
+            return bitSetToString(bs);
+        } catch (FileNotFoundException e) {
+            System.out.println();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+     
+      private String bitSetToString(BitSet set){
+        String result = "";
+        for(int i = 0; i < (set.length() - 2); i++) {
+            if(set.get(i)) {
+                result += "1";
+            } else {
+                result += "0";
+            }
+        }
+        return result;
     }
 }
