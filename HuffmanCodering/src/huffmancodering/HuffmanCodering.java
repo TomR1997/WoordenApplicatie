@@ -14,12 +14,13 @@ import java.util.Scanner;
 public class HuffmanCodering {
 
     private Facade facade;
-    public HuffmanCodering()
-    {
+
+    public HuffmanCodering() {
         facade = new Facade();
         facade.showMenu();
     }
+
     public static void main(String[] args) {
-        HuffmanCodering hc=  new HuffmanCodering();
+        HuffmanCodering hc = new HuffmanCodering();
     }
 }

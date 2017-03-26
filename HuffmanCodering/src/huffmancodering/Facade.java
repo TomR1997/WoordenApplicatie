@@ -10,13 +10,14 @@ package huffmancodering;
  * @author Tomt
  */
 public class Facade {
+
     private Logic logic;
 
     public Facade() {
         logic = new Logic();
     }
-    
-    public void showMenu(){
+
+    public void showMenu() {
         logic.menu();
     }
 }
