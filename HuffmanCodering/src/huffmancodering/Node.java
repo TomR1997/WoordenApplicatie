@@ -5,13 +5,14 @@
  */
 package huffmancodering;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  *
  * @author Tomt
  */
-public class Node implements Comparable<Node> {
+public class Node implements Comparable<Node>, Serializable {
     public Character character;
     public int frequency;
     public Node leftChild, rightChild;

@@ -46,22 +46,24 @@ public class Logic {
                 PriorityQueue queue = sortFrequency(map);
 
                 PriorityQueue boom = generateTree(queue);
-
-                Node hoofdKnoop = (Node) boom.poll();
                 exportToFile(boom);
+                
+                Node hoofdKnoop = (Node) importTree().poll();
+                
                 HashMap<Character, String> tabel = new HashMap<>();
                 getCodes(hoofdKnoop, "", tabel);
                 System.out.println(tabel.toString());
 
                 String gecodeerdBericht = codeMessage(tabel, input);
-                System.out.println(gecodeerdBericht);
+                exportToFile(gecodeerdBericht);
+                System.out.println(importEncoded());
 
                 ArrayList<Character> gecodeerdArray = new ArrayList<>();
 
-                for (char c : gecodeerdBericht.toCharArray()) {
+                for (char c : importEncoded().toCharArray()) {
                     gecodeerdArray.add(c);
                 }
-
+                
                 StringBuilder ontvangenBericht = new StringBuilder("");
                 decodeMessage(hoofdKnoop, hoofdKnoop, ontvangenBericht, gecodeerdArray, 0);
                 System.out.println(ontvangenBericht.toString());
@@ -211,11 +213,11 @@ public class Logic {
         return bitSet;
     }
     
-    public Node importTree() {
+    public PriorityQueue importTree() {
         try {
             FileInputStream fis = new FileInputStream("boom.bin");
             ObjectInputStream oos = new ObjectInputStream(fis);
-            return (Node)oos.readObject();
+            return (PriorityQueue)oos.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
