@@ -47,7 +47,7 @@ public class Logic {
 
                 Node hoofdKnoop = (Node) importTree().poll();
 
-                HashMap<Character, String> tabel = new HashMap<>();
+                Map<Character, String> tabel = new HashMap<>();
                 getCodes(hoofdKnoop, "", tabel);
                 System.out.println(tabel.toString());
 
@@ -76,7 +76,7 @@ public class Logic {
     public Map<Character, Integer> countFrequency(String input) {
         char[] chars = input.toCharArray();
 
-        HashMap<Character, Integer> hashMap = new HashMap<>();
+        Map<Character, Integer> hashMap = new HashMap<>();
 
         for (char c : chars) {
             Integer i = hashMap.get(c);
@@ -112,7 +112,7 @@ public class Logic {
         return queue;
     }
 
-    public void getCodes(Node knoop, String code, HashMap<Character, String> tabel) {
+    public void getCodes(Node knoop, String code, Map<Character, String> tabel) {
         if (knoop.leftChild != null) {
             code += "0";
 
@@ -138,7 +138,7 @@ public class Logic {
         }
     }
 
-    public String codeMessage(HashMap<Character, String> table, String message) {
+    public String codeMessage(Map<Character, String> table, String message) {
         char[] chars = message.toCharArray();
         String codedMessage = "";
 
