@@ -74,6 +74,7 @@ public class Logic {
     }
 
     public Map<Character, Integer> countFrequency(String input) {
+        //HashMap get: O(1), put: O(1)
         char[] chars = input.toCharArray();
 
         Map<Character, Integer> hashMap = new HashMap<>();
@@ -92,6 +93,8 @@ public class Logic {
     }
 
     public PriorityQueue sortFrequency(Map<Character, Integer> map) {
+        // PriorityQueue add: O(log n)
+        // HashMap get: O(1)
         PriorityQueue queue = new PriorityQueue();
         for (Character c : map.keySet()) {
             queue.add(new Node(c, map.get(c)));
@@ -101,6 +104,7 @@ public class Logic {
     }
 
     public PriorityQueue generateTree(PriorityQueue queue) {
+        // PriorityQueue poll: O(log n), add: O(log n), size: O(1)
         while (queue.size() >= 2) {
             Node left = (Node) queue.poll();
             Node right = (Node) queue.poll();
@@ -113,6 +117,7 @@ public class Logic {
     }
 
     public void getCodes(Node knoop, String code, Map<Character, String> tabel) {
+        // HashMap put: O(1)
         if (knoop.leftChild != null) {
             code += "0";
 
@@ -139,6 +144,7 @@ public class Logic {
     }
 
     public String codeMessage(Map<Character, String> table, String message) {
+        // HashMap get: O(1)
         char[] chars = message.toCharArray();
         String codedMessage = "";
 
@@ -150,6 +156,7 @@ public class Logic {
     }
 
     public void decodeMessage(Node hoofdKnoop, Node knoop, StringBuilder bericht, ArrayList<Character> codedMessage, int count) {
+        // ArrayList get: O(1), size: O(1)
         if (codedMessage.size() > count) {
             Character nummer = codedMessage.get(count);
 
