@@ -41,17 +41,17 @@ public class Logic {
                 System.out.println(map.toString());
 
                 PriorityQueue queue = sortFrequency(map);
-
-                PriorityQueue boom = generateTree(queue);
-                exportToFile(boom);
+                System.out.println(queue.toString());
+                PriorityQueue tree = generateTree(queue);
+                exportToFile(tree);
 
                 Node hoofdKnoop = (Node) importTree().poll();
 
-                Map<Character, String> tabel = new HashMap<>();
-                getCodes(hoofdKnoop, "", tabel);
-                System.out.println(tabel.toString());
+                Map<Character, String> table = new HashMap<>();
+                getCodes(hoofdKnoop, "", table);
+                System.out.println(table.toString());
 
-                String gecodeerdBericht = codeMessage(tabel, input);
+                String gecodeerdBericht = codeMessage(table, input);
                 exportToFile(gecodeerdBericht);
                 System.out.println(importEncoded());
 
@@ -104,7 +104,7 @@ public class Logic {
     }
 
     public PriorityQueue generateTree(PriorityQueue queue) {
-        // PriorityQueue poll: O(log n), add: O(log n), size: O(1)
+        // PriorityQueue poll: O(log n), add: O(log n), size: O(1)        
         while (queue.size() >= 2) {
             Node left = (Node) queue.poll();
             Node right = (Node) queue.poll();
@@ -155,28 +155,28 @@ public class Logic {
         return codedMessage;
     }
 
-    public void decodeMessage(Node hoofdKnoop, Node knoop, StringBuilder bericht, ArrayList<Character> codedMessage, int count) {
+    public void decodeMessage(Node hoofdKnoop, Node node, StringBuilder message, ArrayList<Character> codedMessage, int count) {
         // ArrayList get: O(1), size: O(1)
         if (codedMessage.size() > count) {
-            Character nummer = codedMessage.get(count);
+            Character number = codedMessage.get(count);
 
-            if (nummer == '0') {
-                if (knoop.leftChild.character != null) {
-                    bericht.append(knoop.leftChild.character);
+            if (number == '0') {
+                if (node.leftChild.character != null) {
+                    message.append(node.leftChild.character);
                     count++;
-                    decodeMessage(hoofdKnoop, hoofdKnoop, bericht, codedMessage, count);
+                    decodeMessage(hoofdKnoop, hoofdKnoop, message, codedMessage, count);
                 } else {
                     count++;
-                    decodeMessage(hoofdKnoop, knoop.leftChild, bericht, codedMessage, count);
+                    decodeMessage(hoofdKnoop, node.leftChild, message, codedMessage, count);
                 }
-            } else if (nummer == '1') {
-                if (knoop.rightChild.character != null) {
-                    bericht.append(knoop.rightChild.character);
+            } else if (number == '1') {
+                if (node.rightChild.character != null) {
+                    message.append(node.rightChild.character);
                     count++;
-                    decodeMessage(hoofdKnoop, hoofdKnoop, bericht, codedMessage, count);
+                    decodeMessage(hoofdKnoop, hoofdKnoop, message, codedMessage, count);
                 } else {
                     count++;
-                    decodeMessage(hoofdKnoop, knoop.rightChild, bericht, codedMessage, count);
+                    decodeMessage(hoofdKnoop, node.rightChild, message, codedMessage, count);
                 }
             }
         }
