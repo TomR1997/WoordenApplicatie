@@ -49,7 +49,6 @@ public class Logic {
 
                 Map<Character, String> table = new HashMap<>();
                 getCodes(hoofdKnoop, "", table);
-                System.out.println(table.toString());
 
                 String gecodeerdBericht = codeMessage(table, input);
                 exportToFile(gecodeerdBericht);
